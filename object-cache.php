@@ -943,7 +943,7 @@ class WP_Object_Cache {
 		$weight = is_numeric( $weight ) && $weight > 0 ? $weight : 1;
 
 		$servers = $this->get_unused_servers( array( array( $host, $port, $weight ) ) );
-		if ( $servers ) {
+		if ( ! empty( $servers ) ) {
 			return $this->m->addServer( $host, $port, $weight );
 		}
 
