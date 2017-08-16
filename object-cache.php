@@ -942,7 +942,12 @@ class WP_Object_Cache {
 		$port = is_numeric( $port ) && $port > 0 ? $port : 11211;
 		$weight = is_numeric( $weight ) && $weight > 0 ? $weight : 1;
 
-		return $this->m->addServer( $host, $port, $weight );
+		$servers = $this->getUnusedServers( array( array( $host, $port, $weight ) ) );
+		if ( $servers ) {
+			return $this->m->addServer( $host, $port, $weight );
+		}
+
+		return true;
 	}
 
 	/**
@@ -957,10 +962,20 @@ class WP_Object_Cache {
 	 * @return  bool                        True on success; false on failure.
 	 */
 	public function addServers( $servers ) {
-		if ( ! is_object( $this->m ) )
+		if ( ! is_object( $this->m ) ) {
 			return false;
+		}
 
-		return $this->m->addServers( $servers );
+		$add = $servers;
+		if ( $this->m->isPersistent() ) {
+			$add = $this->getUnusedServers( $servers );
+		}
+
+		if ( $add ) {
+			return $this->m->addServers( $add );
+		}
+
+		return true;
 	}
 
 	/**
@@ -2102,5 +2117,38 @@ class WP_Object_Cache {
 		global $table_prefix;
 		$blog_id           = (int) $blog_id;
 		$this->blog_prefix = ( is_multisite() ? $blog_id : $table_prefix ) . ':';
+	}
+
+	/**
+	 * Get a list of unused servers.
+	 *
+	 * @param array $servers List of servers to determine if they have been added.
+	 *
+	 * @return array
+	 */
+	protected function getUnusedServers( $servers ) {
+		$unused = array();
+
+		$listed = $this->m->getServerList();
+		if ( ! empty( $listed ) ) {
+			foreach ( $servers as $server ) {
+
+				$test = array(
+					'host'   => $server[0],
+					'port'   => $server[1],
+					'weight' => isset( $server[2] ) ? (int) $server[2] : 0
+				);
+
+				$found = in_array( $test, $listed );
+
+				if ( ! $found ) {
+					$unused[] = $server;
+				}
+			}
+		} else {
+			$unused = $servers;
+		}
+
+		return $unused;
 	}
 }
