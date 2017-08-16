@@ -942,7 +942,7 @@ class WP_Object_Cache {
 		$port = is_numeric( $port ) && $port > 0 ? $port : 11211;
 		$weight = is_numeric( $weight ) && $weight > 0 ? $weight : 1;
 
-		$servers = $this->getUnusedServers( array( array( $host, $port, $weight ) ) );
+		$servers = $this->get_unused_servers( array( array( $host, $port, $weight ) ) );
 		if ( $servers ) {
 			return $this->m->addServer( $host, $port, $weight );
 		}
@@ -962,13 +962,12 @@ class WP_Object_Cache {
 	 * @return  bool                        True on success; false on failure.
 	 */
 	public function addServers( $servers ) {
-		if ( ! is_object( $this->m ) ) {
+		if ( ! is_object( $this->m ) )
 			return false;
-		}
 
 		$add = $servers;
 		if ( $this->m->isPersistent() ) {
-			$add = $this->getUnusedServers( $servers );
+			$add = $this->get_unused_servers( $servers );
 		}
 
 		if ( $add ) {
@@ -2126,7 +2125,7 @@ class WP_Object_Cache {
 	 *
 	 * @return array
 	 */
-	protected function getUnusedServers( $servers ) {
+	protected function get_unused_servers( $servers ) {
 		$unused = array();
 
 		$listed = $this->m->getServerList();
