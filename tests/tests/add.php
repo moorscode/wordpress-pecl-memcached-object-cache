@@ -5,7 +5,7 @@ class MemcachedUnitTestsAdd extends MemcachedUnitTests {
 	 * Verify "add" method with string as value
 	 */
 	public function test_add_string() {
-		$key = microtime();
+		$key = uniqid();
 		$value = 'brodeur';
 
 		// Add string to memcached
@@ -19,7 +19,7 @@ class MemcachedUnitTestsAdd extends MemcachedUnitTests {
 	 * Verify "add" method with int as value
 	 */
 	public function test_add_int() {
-		$key = microtime();
+		$key = uniqid();
 		$value = 42;
 
 		// Add int to memcached
@@ -33,7 +33,7 @@ class MemcachedUnitTestsAdd extends MemcachedUnitTests {
 	 * Verify "add" method with array as value
 	 */
 	public function test_add_array() {
-		$key = microtime();
+		$key = uniqid();
 		$value = array( 5, 'quick' );
 
 		// Add array to memcached
@@ -47,7 +47,7 @@ class MemcachedUnitTestsAdd extends MemcachedUnitTests {
 	 * Verify "add" method values when adding second object with existing key
 	 */
 	public function test_add_fails_if_key_exists() {
-		$key = microtime();
+		$key = uniqid();
 		$value1 = 'parise';
 		$value2 = 'king';
 
@@ -65,7 +65,7 @@ class MemcachedUnitTestsAdd extends MemcachedUnitTests {
 	 * Verify "add" method stores a no_mc_group in
 	 */
 	public function test_add_avoid_memcached_if_no_mc_group() {
-		$key = microtime();
+		$key = uniqid();
 		$group = 'comment';
 		$value = 'brown';
 
@@ -86,7 +86,7 @@ class MemcachedUnitTestsAdd extends MemcachedUnitTests {
 	 * Verify "addByKey" method with string as value
 	 */
 	public function test_add_by_key_string() {
-		$key = microtime();
+		$key = uniqid();
 		$value = 'kovalchuk';
 		$server_key_real = 'doughty';
 
@@ -101,7 +101,7 @@ class MemcachedUnitTestsAdd extends MemcachedUnitTests {
 	 * Verify "addByKey" method with int as value
 	 */
 	public function test_add_by_key_int() {
-		$key = microtime();
+		$key = uniqid();
 		$value = 42;
 		$server_key_real = 'doughty';
 
@@ -116,7 +116,7 @@ class MemcachedUnitTestsAdd extends MemcachedUnitTests {
 	 * Verify "addByKey" method with array as value
 	 */
 	public function test_add_by_key_array() {
-		$key = microtime();
+		$key = uniqid();
 		$value = array( 5, 'value' );
 		$server_key_real = 'doughty';
 
@@ -131,7 +131,7 @@ class MemcachedUnitTestsAdd extends MemcachedUnitTests {
 	 * Verify "addByKey" method values when adding second object with existing key
 	 */
 	public function test_add_by_key_fails_if_key_exists() {
-		$key = microtime();
+		$key = uniqid();
 
 		$value1 = 'stevens';
 		$value2 = 'kuri';
@@ -156,7 +156,7 @@ class MemcachedUnitTestsAdd extends MemcachedUnitTests {
 	 * Verify "addByKey" method stores a no_mc_group in
 	 */
 	public function test_add_by_key_avoid_memcached_if_no_mc_group() {
-		$key = microtime();
+		$key = uniqid();
 
 		$value1 = 'stevens';
 
@@ -181,7 +181,7 @@ class MemcachedUnitTestsAdd extends MemcachedUnitTests {
 	 * Verify that wp_suspend_cache_addition() stops items from being added to cache
 	 */
 	public function test_add_suspended_by_wp_cache_suspend_addition_string() {
-		$key = microtime();
+		$key = uniqid();
 		$value = 'crawford';
 
 		// Suspend the cache
@@ -199,7 +199,7 @@ class MemcachedUnitTestsAdd extends MemcachedUnitTests {
 	 * Verify that wp_suspend_cache_addition() stops items from being added to cache, but allows additions after re-enabled
 	 */
 	public function test_add_enabled_by_wp_cache_un_suspend_addition_string() {
-		$key = microtime();
+		$key = uniqid();
 		$value = 'miller';
 
 		// Suspend the cache
@@ -212,7 +212,7 @@ class MemcachedUnitTestsAdd extends MemcachedUnitTests {
 		$this->object_cache->get( $key );
 		$this->assertSame( Memcached::RES_NOTFOUND, $this->object_cache->getResultCode() );
 
-		$key = microtime();
+		$key = uniqid();
 		$value = 'carruth';
 
 		// Re-enable the cache
