@@ -732,7 +732,14 @@ function wp_cache_switch_to_blog( $blog_id ) {
  */
 function wp_cache_init() {
 	global $wp_object_cache;
-	$wp_object_cache = new WP_Object_Cache();
+
+	// Initialize the class instance with persistence ID if set.
+	$persistent_id = null;
+	if ( defined( 'WP_CACHE_PERSISTENT_ID' ) && ! empty( WP_CACHE_PERSISTENT_ID ) ) {
+		$persistent_id = WP_CACHE_PERSISTENT_ID;
+	}
+
+	$wp_object_cache = new WP_Object_Cache( $persistent_id );
 }
 
 /**
