@@ -2129,23 +2129,20 @@ class WP_Object_Cache {
 		$unused = array();
 
 		$listed = $this->m->getServerList();
-		if ( ! empty( $listed ) ) {
-			foreach ( $servers as $server ) {
+		if ( empty( $listed ) ) {
+			return $servers;
+		}
 
-				$test = array(
-					'host'   => $server[0],
-					'port'   => $server[1],
-					'weight' => isset( $server[2] ) ? (int) $server[2] : 0
-				);
+		foreach ( $servers as $server ) {
+			$test = array(
+				'host'   => $server[0],
+				'port'   => $server[1],
+				'weight' => isset( $server[2] ) ? (int) $server[2] : 0
+			);
 
-				$found = in_array( $test, $listed );
-
-				if ( ! $found ) {
-					$unused[] = $server;
-				}
+			if ( ! in_array( $test, $listed, true ) ) {
+				$unused[] = $server;
 			}
-		} else {
-			$unused = $servers;
 		}
 
 		return $unused;
